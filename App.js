@@ -16,7 +16,7 @@ const App = () => {
     setShow(true);
   }
   
-  const IMAGE_PATH = 'https://m.media-amazon.com/images/I/41fO4oChXSL._AC_SX355_.jpg'
+  const IMAGE_PATH = 'https://www.rover.com/blog/wp-content/uploads/2021/06/goudacheeeese-1024x1024.jpg'
   
   const checkPermission = async() => {
     if(Platform.OS === 'ios') {
@@ -34,12 +34,12 @@ const App = () => {
           
           console.log('Storage permission granted')
           //get name from download image and pass to handleimgname
-          const namee = await downloadImage()
+          const getName = await downloadImage()
           //wait 5 seconds for image to fully save
-          if (namee){
-            setTimeout(() => handleImgName(namee), 5000);
+          if (getName){
+            setTimeout(() => handleImgName(getName), 5000);
           }
-          alert(namee)
+          alert(getName)
           setShow(true)
                     
         }else{
@@ -64,18 +64,18 @@ const App = () => {
 
     const dirs = fs.dirs; //Use the dir API
     
-    const Unread_Books =  dirs.PictureDir+ '/reactsavedata';
+    const newDir =  dirs.PictureDir+ '/reactsavedata';
     fs
-      .mkdir(Unread_Books)
+      .mkdir(newDir)
       .catch(err => {
         console.log(err);
       });
 
-    let PictureDir = Unread_Books
+    let PictureDir = newDir
 
     //get var name to save image with so we can use that name to display it
     const randd =  Math.floor(date.getTime()+date.getSeconds()/2)
-    const temp_img_name = PictureDir + '/image_' +
+    const generated_img_path = PictureDir + '/image_' +
      randd + ext
     
 
@@ -84,15 +84,13 @@ const App = () => {
       addAndroidDownloads:{
         useDownloadManager:true,
         notification:true, 
-        path: temp_img_name,
+        path: generated_img_path,
         description: 'Image'
       }
     }
     config(options)
     .fetch('GET', image_URL)
     .then(res => {
-      //showing alert after success downloading
-      
       console.log('res-> ',JSON.stringify(res))
     })
     return 'image_'+randd + ext
